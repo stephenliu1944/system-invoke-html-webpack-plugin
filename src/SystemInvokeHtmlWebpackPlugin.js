@@ -1,29 +1,30 @@
-function SystemHtmlWebpackPlugin(htmlWebpackPlugin) {
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+
+function SystemInvokeHtmlWebpackPlugin() {
     // TODO: validateOptions()
     // this.options = options;
-    this.htmlWebpackPlugin = htmlWebpackPlugin;
 }
 
-SystemHtmlWebpackPlugin.prototype.apply = function(compiler) {
-    compiler.hooks.afterPlugins.tap(SystemHtmlWebpackPlugin.name, () => {
+SystemInvokeHtmlWebpackPlugin.prototype.apply = function(compiler) {
+    compiler.hooks.afterPlugins.tap(SystemInvokeHtmlWebpackPlugin.name, () => {
         // afterPlugins > compilation 事件后才能拿到 HtmlWebpackPlugin 相关的 hooks
-        compiler.hooks.compilation.tap(SystemHtmlWebpackPlugin.name, compilation => {
+        compiler.hooks.compilation.tap(SystemInvokeHtmlWebpackPlugin.name, compilation => {
             var hook;
 
-            if (this.htmlWebpackPlugin && this.htmlWebpackPlugin.getHooks) {
+            if (HtmlWebpackPlugin && HtmlWebpackPlugin.getHooks) {
                 // HtmlWebpackPlugin v4
-                hook = this.htmlWebpackPlugin.getHooks(compilation).alterAssetTags;
+                hook = HtmlWebpackPlugin.getHooks(compilation).alterAssetTags;
             } else {
                 // HtmlWebpackPlugin v3
                 hook = compilation.hooks.htmlWebpackPluginAlterAssetTags;   // Event: html-webpack-plugin-alter-asset-tags
             }
-                
-            hook.tap(SystemHtmlWebpackPlugin.name, this.appendSystemImport.bind(this));
+
+            hook.tap(SystemInvokeHtmlWebpackPlugin.name, this.appendSystemImport.bind(this));
         });
     });
 };
 
-SystemHtmlWebpackPlugin.prototype.appendSystemImport = function(data) {
+SystemInvokeHtmlWebpackPlugin.prototype.appendSystemImport = function(data) {
     if (Array.isArray(data.body) && data.body.length > 0) {
         var entry = data.body[data.body.length - 1];
         data.body.push({
@@ -37,4 +38,4 @@ SystemHtmlWebpackPlugin.prototype.appendSystemImport = function(data) {
     }
 };
 
-module.exports = SystemHtmlWebpackPlugin;
+module.exports = SystemInvokeHtmlWebpackPlugin;

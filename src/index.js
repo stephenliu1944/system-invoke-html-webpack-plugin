@@ -1,4 +1,4 @@
-var SystemHtmlWebpackPlugin = require('./SystemHtmlWebpackPlugin');
+var SystemInvokeHtmlWebpackPlugin = require('./SystemInvokeHtmlWebpackPlugin');
 
-module.exports = SystemHtmlWebpackPlugin;
+module.exports = SystemInvokeHtmlWebpackPlugin;
  
