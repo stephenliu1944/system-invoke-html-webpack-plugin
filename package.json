@@ -1,6 +1,6 @@
 {
   "name": "system-invoke-html-webpack-plugin",
-  "version": "0.1.4",
+  "version": "0.1.7",
   "description": "inject System.import() into HtmlWebpackPlugin template.",
   "main": "src/index.js",
   "license": "MIT",

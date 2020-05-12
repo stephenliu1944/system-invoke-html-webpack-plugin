@@ -25,17 +25,18 @@ SystemInvokeHtmlWebpackPlugin.prototype.apply = function(compiler) {
 };
 
 SystemInvokeHtmlWebpackPlugin.prototype.appendSystemImport = function(data) {
-    if (Array.isArray(data.body) && data.body.length > 0) {
-        var entry = data.body[data.body.length - 1];
-        data.body.push({
-            tagName: 'script',
-            attributes: {
-                type: 'text/javascript'
-            },
-            innerHTML: `System.import("${entry.attributes.src}");`,
-            closeTag: true
-        });
-    }
+    var tags = (data.assetTags && data.assetTags.scripts) || data.body || [];     // v4 || v3
+    var main = tags[tags.length - 1];
+    
+    // 加在最后
+    tags.push({
+        tagName: 'script',
+        attributes: {
+            type: 'text/javascript'
+        },
+        innerHTML: `System.import("${main.attributes.src}");`,
+        closeTag: true
+    });
 };
 
 module.exports = SystemInvokeHtmlWebpackPlugin;
