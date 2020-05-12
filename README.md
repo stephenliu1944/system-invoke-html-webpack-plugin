@@ -32,5 +32,10 @@ html
 </html>
 ```
 
+## API
+```js
+new SystemHtmlWebpackPlugin(name)   // default is the last js that append to body
+```
+
 ## License
 MIT

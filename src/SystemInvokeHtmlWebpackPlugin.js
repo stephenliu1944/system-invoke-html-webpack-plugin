@@ -1,8 +1,8 @@
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
-function SystemInvokeHtmlWebpackPlugin() {
+function SystemInvokeHtmlWebpackPlugin(options) {
     // TODO: validateOptions()
-    // this.options = options;
+    this.options = options;
 }
 
 SystemInvokeHtmlWebpackPlugin.prototype.apply = function(compiler) {
@@ -25,8 +25,15 @@ SystemInvokeHtmlWebpackPlugin.prototype.apply = function(compiler) {
 };
 
 SystemInvokeHtmlWebpackPlugin.prototype.appendSystemImport = function(data) {
-    var tags = (data.assetTags && data.assetTags.scripts) || data.body || [];     // v4 || v3
-    var main = tags[tags.length - 1];
+    var name;
+
+    if (typeof this.options === 'string') {
+        name = this.options;
+    } else {
+        let tags = (data.assetTags && data.assetTags.scripts) || data.body || [];     // v4 || v3
+        let main = tags[tags.length - 1];
+        name = main.attributes.src;
+    }
     
     // 加在最后
     tags.push({
@@ -34,7 +41,7 @@ SystemInvokeHtmlWebpackPlugin.prototype.appendSystemImport = function(data) {
         attributes: {
             type: 'text/javascript'
         },
-        innerHTML: `System.import("${main.attributes.src}");`,
+        innerHTML: `System.import("${name}");`,
         closeTag: true
     });
 };
