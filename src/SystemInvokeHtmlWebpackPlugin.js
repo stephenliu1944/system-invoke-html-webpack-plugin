@@ -25,12 +25,12 @@ SystemInvokeHtmlWebpackPlugin.prototype.apply = function(compiler) {
 };
 
 SystemInvokeHtmlWebpackPlugin.prototype.appendSystemImport = function(data) {
+    var tags = (data.assetTags && data.assetTags.scripts) || data.body || [];     // v4 || v3
     var name;
 
     if (typeof this.options === 'string') {
         name = this.options;
     } else {
-        let tags = (data.assetTags && data.assetTags.scripts) || data.body || [];     // v4 || v3
         let main = tags[tags.length - 1];
         name = main.attributes.src;
     }
